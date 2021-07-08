@@ -1,4 +1,4 @@
-# GWAS GCTA - by Clemence Fraslin
+# GWAS using GCTA by Clemence Fraslin
 
 Here we describe a step-by-step pipeline to perform a GWAS. The pipeline  uses the PLINK software for quality control and formatting of genotyping data, and the GCTA software to estimate genetic parameters and perform the GWAS , and. T the R package “QQMAN” is used to produce a Manhattan plot. The three software packages used in this pipeline are freely available and user-friendly. For more detailed information on the options available for each software, you can refer to the PLINK (http://zzz.bwh.harvard.edu/plink/ for version 1.07 or https://www.cog-genomics.org/plink/ for version 1.09) and GCTA websites (http://cnsgenomics.com/software/gcta/). The QQMAN package is available from CRAN (https://cran.r-project.org/web/packages/qqman/vignettes/qqman.html) or GitHub (https://github.com/stephenturner/qqman).
 
