@@ -60,12 +60,15 @@ The following R commands use the QQMAN package to plot Manhattan plots from .mlm
 install.package(“qqman”)
 library(qqman)
 NCHR=number_of_chromosomes   #Set "number_of_chromosomes" to the correct value for your species
-# loading the file
+
+#Load the GCTA output file
 gwasResults = read.table(“gwas.mlma”, header = TRUE)
-# Threshold 1: 5% at the genome-wide level
+
+# Calculate the 5% significance level for the genome-wide ("Thrgen") and the chromosome-wide ("Thrchr") levels
 Thrgen = -log10(0.05/nrow(gwasResults))
-# Threshold 2: 5% at the chromosome-wide level
 Thrchr = -log10(0.05/(nrow(gwasResults)/NCHR))
+
+#Draw the Manhattan plot
 manhattan(gwasResults, chr = "Chr", bp="bp", snp ="SNP", p="p", main = "Manhattan Plot", col = c("blue", "orange", “forestgreen”, “purple”), suggestiveline = Thrchr, genomewideline = Thrgen)
 ```
 You can also use the qq function of the QQMAN package to plot the QQplot (quantile-quantile) of observed versus expected –log10(p-values):
