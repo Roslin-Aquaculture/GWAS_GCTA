@@ -46,7 +46,7 @@ The following commands first create the GRM, perform the AI-REML  analysis and r
 ```
 gcta64 --bfile finaldata --autosome-num CHR --make-grm --out GRM_data --thread-num 10
 gcta64 --bfile finaldata --reml --grm GRM_data --autosome-num CHR --pheno TRAIT.pheno --out reml_TRAIT
-gcta64 --mlma --bfile finaldata --grm GRM_data --pheno TRAIT.pheno --out gwas > gwas.log
+gcta64 --mlma --bfile finaldata --grm GRM_data --autosome-num CHR --pheno TRAIT.pheno --out gwas > gwas.log
 ```
 In the reml_TRAIT.hsq (output for --reml) file you will find estimates of h2, genetic and phenotypic variances. In the gwas.log file you can check that the REML analysis converged (typically AI-REML should converge in less than 20 iterations). 
 If you want to perform a GWAS using a model with fixed effect and covariates, you can use the following command, this time we used the LOCO approach:
