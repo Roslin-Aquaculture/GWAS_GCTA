@@ -18,7 +18,7 @@ chr_number=23
 # Genotype missing call rate = SNPs with a missing call rate over this value will be removed from the dataset 
 Geno_CallRate=0.05 
 # Individual call rate = Individuals with a genotype call rate below this value will be removed from the dataset
-IID_CallRate=0.95
+IID_CallRate=0.1
 # Hardy W Equilibrium = will be removed from the dataset
 HVE_pval=0.000001 
 # Minor Allele Frequency = SNPs with a MAF below this value will be removed from the dataset
@@ -51,12 +51,11 @@ plink --bfile noduplic${MyProject} --chr-set ${chr_number} --geno ${Geno_CallRat
 #GRM
 gcta64 --bfile ${MyProject} --autosome-num ${chr_number} --make-grm --out GRM_${MyProject} --thread-num 10
 
-#AI-REML
-gcta64 --bfile ${MyProject} --reml --grm GRM_${MyData} --autosome-num ${chr_number} --pheno ${MyData}.pheno --out reml_${MyTrait}
+#AI-REML with a fixed effect in the model (--qcovar)
+gcta64 --reml --grm GRM_${MyData} --pheno ${MyData}.pheno --qcovar ${MyData}.qcovar --out reml_${MyTrait}
 
-#MLMA 
+#MLMA with a fixed effect in the model(--qcovar)
 gcta64 --mlma --bfile ${MyProject} --autosome-num ${chr_number} --grm GRM_${MyData} --pheno ${MyData}.pheno --qcovar ${MyData}.qcovar --out gwas_${MyData}_${MyTrait} > gwas.log
 
-#MLMA-LOCO
+#MLMA-LOCO with a fixed effect in the model(--qcovar)
 gcta64 --mlma-loco --bfile ${MyProject} --autosome-num ${chr_number} --grm GRM_${MyData} --pheno ${MyData}.pheno --qcovar ${MyData}.qcovar --out gwas_${MyData}_${MyTrait} > gwas.log
-

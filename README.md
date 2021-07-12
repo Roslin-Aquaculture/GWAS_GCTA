@@ -38,14 +38,14 @@ plink --bfile newdata --remove ID_to_remove.txt --make-bed --out noduplicdata
 ## 3.	Quality control
 This command is used to perform all other quality controls on the dataset:
 ```
-plink --bfile noduplicdata --chr-set CHR --geno 0.05 --mind 0.95 --hwe 0.000001 --maf 0.05 --nonfounders --make-bed --out finaldata
+plink --bfile noduplicdata --chr-set CHR --geno 0.05 --mind 0.05 --hwe 0.000001 --maf 0.05 --nonfounders --make-bed --out finaldata
 ```
 
 ## 4.	GWAS
 The following commands first create the GRM, perform the AI-REML  analysis and run a GWAS with no fixed effect and no covariates using the MLMA approach:
 ```
 gcta64 --bfile finaldata --autosome-num CHR --make-grm --out GRM_data --thread-num 10
-gcta64 --bfile finaldata --reml --grm GRM_data --autosome-num CHR --pheno TRAIT.pheno --out reml_TRAIT
+gcta64 --reml --grm GRM_data --pheno TRAIT.pheno --out reml_TRAIT
 gcta64 --mlma --bfile finaldata --grm GRM_data --autosome-num CHR --pheno TRAIT.pheno --out gwas > gwas.log
 ```
 In the reml_TRAIT.hsq (output for --reml) file you will find estimates of h2, genetic and phenotypic variances. In the gwas.log file you can check that the REML analysis converged (typically AI-REML should converge in less than 20 iterations). 
