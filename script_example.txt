@@ -1,11 +1,11 @@
 #!/bin/bash
 
-##### SET UP names of files, directories and chromosomes numbers
-#Name of output files
-MyProject=Turbot_Final
+##### SET UP names of files, directories and chromosomes numbers --> this needs to be modify to fit your files names, chromsome number and trait name
+## In this example script it correspond to the example files on sex determinism in Turbot available in this repository
 
-#Name of the .ped and .map files 
+#Name of the .ped and .map files , name of the phenotype covariates and fixed effect files eg ${MyData}.pheno ${MyData}.covar ${MyData}.qcovar
 MyData=Turbot
+# The namne of the final genotype file post QC will be ${MyData}_final.bed .bim and .fam
 
 #Name of the trait
 MyTrait=SEX
@@ -14,7 +14,7 @@ MyTrait=SEX
 chr_number=23
 
 
-##### Thresholds for quality controls on SNP and Individuals
+##### Thresholds for quality controls on SNP and Individuals 
 # Genotype missing call rate = SNPs with a missing call rate over this value will be removed from the dataset 
 Geno_CallRate=0.05 
 # Individual call rate = Individuals with a genotype call rate below this value will be removed from the dataset
@@ -47,18 +47,18 @@ plink --bfile ${MyData} --remove ID_to_remove.txt --make-bed --out noduplic${MyD
 
 #################	Quality control
 # This command is used to perform all other quality controls on the dataset:
-plink --bfile noduplic${MyProject} --chr-set ${chr_number} --geno ${Geno_CallRate} --mind ${IID_CallRate} --hwe ${HVE_pval} --maf ${MAF_thr} --nonfounders --make-bed --out ${MyProject}
+plink --bfile noduplic${MyData} --chr-set ${chr_number} --geno ${Geno_CallRate} --mind ${IID_CallRate} --hwe ${HVE_pval} --maf ${MAF_thr} --nonfounders --make-bed --out ${MyData}_Final
 
 
 ############### GWAS
 #GRM
-gcta64 --bfile ${MyProject} --autosome-num ${chr_number} --make-grm --out GRM_${MyProject} --thread-num 10
+gcta64 --bfile ${MyData}_Final --autosome-num ${chr_number} --make-grm --out GRM_${MyData} --thread-num 10
 
 #AI-REML with a fixed effect in the model (--qcovar)
 gcta64 --reml --grm GRM_${MyData} --pheno ${MyData}.pheno --qcovar ${MyData}.qcovar --out reml_${MyTrait}
 
 #MLMA with a fixed effect in the model(--qcovar)
-gcta64 --mlma --bfile ${MyProject} --autosome-num ${chr_number} --grm GRM_${MyData} --pheno ${MyData}.pheno --qcovar ${MyData}.qcovar --out gwas_${MyData}_${MyTrait} > gwas.log
+gcta64 --mlma --bfile ${MyData}_Final --autosome-num ${chr_number} --grm GRM_${MyData} --pheno ${MyData}.pheno --qcovar ${MyData}.qcovar --out gwas_${MyData}_${MyTrait} > gwas_mlma.log
 
 #MLMA-LOCO with a fixed effect in the model(--qcovar)
-gcta64 --mlma-loco --bfile ${MyProject} --autosome-num ${chr_number} --grm GRM_${MyData} --pheno ${MyData}.pheno --qcovar ${MyData}.qcovar --out gwas_${MyData}_${MyTrait} > gwas.log
+gcta64 --mlma-loco --bfile ${MyData}_Final --autosome-num ${chr_number} --grm GRM_${MyData} --pheno ${MyData}.pheno --qcovar ${MyData}.qcovar --out gwas_${MyData}_${MyTrait} > gwas_mlma-loco.log
