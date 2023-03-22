@@ -11,7 +11,7 @@ MyData=Turbot
 MyTrait=SEX
 
 #Number of chromosomes in the dataset
-chr_number=23
+chr_number=22
 
 
 ##### Thresholds for quality controls on SNP and Individuals 
