@@ -33,7 +33,10 @@ MAF_thr=0.05
 plink --ped ${MyData}.ped --map ${MyData}.map --chr-set ${chr_number} --make-bed --out ${MyData}
 
 
+# We use a plink command line --genome to get the IBD values of each pair of individuals in order to identify duplicated samples, if any, and remove them
+plink --bfile ${MyData} --chr-set ${chr_number} --genome --out ${Mydata}
 
+# gwak comman lines to detect the duplicated samples (IBD > 0.9), create a file with Family_ID and Individual_ID to filter them out of the dataset
 gawk -v IBD_thr=0.90 ' NR > 1 { if ($10 > IBD_thr) { print $1" " $2 " " $3 " " $4 }}' ${MyData}.genome > duplicated_ID.txt
 gawk '{print $1 " " $2}' duplicated_ID.txt > ID_to_remove.txt
 gawk '{print $3 " " $4}' duplicated_ID.txt >> ID_to_remove.txt
