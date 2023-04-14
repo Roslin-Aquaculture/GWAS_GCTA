@@ -42,16 +42,18 @@ plink --bfile noduplicdata --chr-set CHR --geno 0.05 --mind 0.05 --hwe 0.000001 
 ```
 
 ## 4.	GWAS
-The following commands first create the GRM, perform the AI-REML  analysis and run a GWAS with no fixed effect and no covariates using the MLMA approach:
+The following commands first create the GRM, perform the AI-REML analysis and run a GWAS using the MLMA approach with an example without covariate or fixed effect in the mode and an example with covariate and fixed effects:
 ```
 gcta64 --bfile finaldata --autosome-num CHR --make-grm --out GRM_data --thread-num 10
-gcta64 --reml --grm GRM_data --pheno TRAIT.pheno --out reml_TRAIT
-gcta64 --mlma --bfile finaldata --grm GRM_data --autosome-num CHR --pheno TRAIT.pheno --out gwas > gwas.log
+gcta64 --reml --grm GRM_data --pheno TRAIT.pheno --qcovar FixedEffet.qcovar --covar Covariate.covar --out reml_TRAIT
+gcta64 --mlma --bfile finaldata --grm GRM_data --autosome-num CHR --pheno TRAIT.pheno  --out gwas > gwas.log
+gcta64 --mlma --bfile finaldata --grm GRM_data --pheno TRAIT.pheno --qcovar FixedEffet.qcovar --covar Covariate.covar --autosome-num CHR --out gwas-fixed-cov > gwas-fixed-cov.log
 ```
 In the reml_TRAIT.hsq (output for --reml) file you will find estimates of h2, genetic and phenotypic variances. In the gwas.log file you can check that the REML analysis converged (typically AI-REML should converge in less than 20 iterations). 
-If you want to perform a GWAS using a model with fixed effect and covariates, you can use the following command, this time we used the LOCO approach:
+
+If you want to perform a GWAS using the LOCO (leave-one-chromosome-out) approach, you can use the following command:
 ```
-gcta64 --mlma-loco --bfile finaldata --grm GRM_data --pheno TRAIT.pheno --qcovar FixedEffet.qcovar --covar Covariate.covar --autosome-num CHR --out gwas-fixed-cov --thread-num 10 > gwas-fixed-cov.log
+gcta64 --mlma-loco --bfile finaldata --grm GRM_data --pheno TRAIT.pheno --qcovar FixedEffet.qcovar --covar Covariate.covar --autosome-num CHR --out gwas-fixed-cov --thread-num 10 > gwas_loco-fixed-cov.log
 ```
 
 ## 5.	Manhattan plot
