@@ -54,11 +54,11 @@ plink --bfile noduplic${MyData} --chr-set ${chr_number} --geno ${Geno_CallRate} 
 #GRM
 gcta64 --bfile ${MyData}_Final --autosome-num ${chr_number} --make-grm --out GRM_${MyData} --thread-num 10
 
-#AI-REML with a fixed effect in the model (--qcovar)
-gcta64 --reml --grm GRM_${MyData} --pheno ${MyData}.pheno --qcovar ${MyData}.qcovar --out reml_${MyTrait}
+#AI-REML with a fixed effect in the model (--qcovar) as a discrete variable
+gcta64 --reml --grm GRM_${MyData} --pheno ${MyData}.pheno --covar ${MyData}.covar --out reml_${MyTrait}
 
-#MLMA with a fixed effect in the model(--qcovar)
-gcta64 --mlma --bfile ${MyData}_Final --autosome-num ${chr_number} --grm GRM_${MyData} --pheno ${MyData}.pheno --qcovar ${MyData}.qcovar --out gwas_${MyData}_${MyTrait} > gwas_mlma.log
+#MLMA with a fixed effect in the model(--covar) discrete variable
+gcta64 --mlma --bfile ${MyData}_Final --autosome-num ${chr_number} --grm GRM_${MyData} --pheno ${MyData}.pheno --covar ${MyData}.covar --out gwas_${MyData}_${MyTrait} > gwas_mlma.log
 
-#MLMA-LOCO with a fixed effect in the model(--qcovar)
+#MLMA-LOCO with a quantitative covariate in the model(--qcovar) as a continuous variable 
 gcta64 --mlma-loco --bfile ${MyData}_Final --autosome-num ${chr_number} --grm GRM_${MyData} --pheno ${MyData}.pheno --qcovar ${MyData}.qcovar --out gwas_${MyData}_${MyTrait} > gwas_mlma-loco.log
