@@ -10,8 +10,8 @@ MyData=Turbot
 #Name of the trait
 MyTrait=SEX
 
-#Number of chromosomes in the dataset
-chr_number=22
+#Number of chromosomes in the dataset (there are 22 chromsomes in the Turbot file but chromosome 18 is missing so the last chromosome number is 23 and we need to match this)
+chr_number=23
 
 
 ##### Thresholds for quality controls on SNP and Individuals 
